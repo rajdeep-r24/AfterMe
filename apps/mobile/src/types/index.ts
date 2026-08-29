@@ -1,3 +1,8 @@
+/**
+ * AfterMe Mobile Types
+ * Defines and re-exports data contracts matching @afterme/shared
+ */
+
 export type MemoryType = 
   | 'belonging'
   | 'location'
@@ -34,6 +39,11 @@ export interface Memory {
   importance: RiskLevel;
   risk_level: RiskLevel;
   status: MemoryStatus;
+  latitude?: number | null;
+  longitude?: number | null;
+  radius?: number | null;
+  image_url?: string | null;
+  related_memory_ids?: string[];
   created_at: string;
   updated_at: string;
 }
@@ -43,10 +53,11 @@ export interface ProactiveAlert {
   user_id: string;
   memory_id: string;
   memory: Memory;
-  trigger_type: string;
+  trigger_type: 'location_departure' | 'geofence_departure' | 'time_reminder' | 'context_change';
   title: string;
   message: string;
   severity: RiskLevel;
+  distance_meters?: number;
   created_at: string;
   is_dismissed: boolean;
 }
@@ -56,4 +67,22 @@ export interface AskResponse {
   relevant_memories: Memory[];
   has_match: boolean;
   confidence: number;
+  follow_up_hint?: string;
+}
+
+export type FoundationStatus = 'ready' | 'loading' | 'error';
+
+export interface MobileAppConfig {
+  apiUrl: string;
+  defaultUserId: string;
+  version: string;
+  isDev: boolean;
+}
+
+export interface ApiHealthStatus {
+  connected: boolean;
+  checkedAt: string | null;
+  endpoint: string;
+  latencyMs?: number;
+  error?: string;
 }
